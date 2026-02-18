@@ -1,5 +1,6 @@
 package com.kauanferreira.smartdaojdbc.dao;
 
+import com.kauanferreira.smartdaojdbc.entity.Department;
 import com.kauanferreira.smartdaojdbc.entity.Seller;
 
 import java.util.List;
@@ -50,4 +51,12 @@ public interface SellerDao {
      * @return a list of all sellers
      */
     List<Seller> findAll();
+
+    /**
+     * Finds all sellers belonging to a specific department.
+     *
+     * @param department the department to filter by
+     * @return a list of sellers in the given department, ordered by name
+     */
+    List<Seller> findByDepartment(Department department);
 }
