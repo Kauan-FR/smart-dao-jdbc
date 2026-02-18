@@ -10,9 +10,9 @@ import java.sql.Statement;
 import java.util.Properties;
 
 /**
- * Classe utilitária para gerenciar conexões com o banco de dados PostgreSQL.
- * Utiliza o padrão Singleton para manter uma única conexão ativa.
- * As configurações são carregadas do arquivo db.properties.
+ * Utility class for managing PostgreSQL database connections.
+ * Uses the Singleton pattern to maintain a single active connection.
+ * Settings are loaded from the db.properties file.
  *
  * @author Kauan
  * @version 1.0
@@ -20,16 +20,16 @@ import java.util.Properties;
  */
 public class DB {
 
-    /** Conexão única (Singleton) com o banco de dados. */
+    /** Single connection (Singleton) to the database. */
     private static Connection connection = null;
 
     /**
-     * Obtém a conexão com o banco de dados.
-     * Se a conexão ainda não existir, cria uma nova usando as propriedades
-     * do arquivo db.properties. Caso já exista, retorna a mesma conexão.
+     * Gets the database connection.
+     * If the connection does not exist yet, creates a new one using
+     * the properties from db.properties. If it already exists, returns the same connection.
      *
-     * @return Connection objeto de conexão ativa com o banco de dados
-     * @throws DbException se ocorrer erro ao estabelecer a conexão
+     * @return Connection active database connection object
+     * @throws DbException if an error occurs while establishing the connection
      */
     public static Connection getConnection() {
         if (connection == null) {
@@ -45,16 +45,16 @@ public class DB {
     }
 
     /**
-     * Carrega as propriedades de conexão do arquivo db.properties.
-     * O arquivo deve estar localizado em src/main/resources/ e conter:
+     * Loads connection properties from the db.properties file.
+     * The file must be located in src/main/resources/ and contain:
      * <ul>
-     *     <li>user - usuário do banco de dados</li>
-     *     <li>password - senha do banco de dados</li>
-     *     <li>dburl - URL de conexão JDBC (ex: jdbc:postgresql://localhost:5432/livraria)</li>
+     *     <li>user - database user</li>
+     *     <li>password - database password</li>
+     *     <li>dburl - JDBC connection URL (e.g.: jdbc:postgresql://localhost:5432/livraria)</li>
      * </ul>
      *
-     * @return Properties objeto contendo as configurações de conexão
-     * @throws DbException se o arquivo db.properties não for encontrado ou não puder ser lido
+     * @return Properties object containing the connection settings
+     * @throws DbException if the db.properties file is not found or cannot be read
      */
     private static Properties loadProperties() {
         try (InputStream fs = DB.class.getClassLoader().getResourceAsStream("db.properties")) {
@@ -67,11 +67,11 @@ public class DB {
     }
 
     /**
-     * Fecha a conexão ativa com o banco de dados.
-     * Após o fechamento, a conexão é definida como null para permitir
-     * uma nova conexão futura caso necessário.
+     * Closes the active database connection.
+     * After closing, the connection is set to null to allow
+     * a new connection in the future if needed.
      *
-     * @throws DbException se ocorrer erro ao fechar a conexão
+     * @throws DbException if an error occurs while closing the connection
      */
     public static void closeConnection() {
         if (connection != null) {
@@ -85,11 +85,11 @@ public class DB {
     }
 
     /**
-     * Fecha um objeto Statement de forma segura.
-     * Verifica se o Statement não é nulo antes de tentar fechar.
+     * Safely closes a Statement object.
+     * Checks if the Statement is not null before attempting to close it.
      *
-     * @param stmt o Statement a ser fechado, pode ser null
-     * @throws DbException se ocorrer erro ao fechar o Statement
+     * @param stmt the Statement to be closed, can be null
+     * @throws DbException if an error occurs while closing the Statement
      */
     public static void closeStatement(Statement stmt) {
         if (stmt != null) {
@@ -102,11 +102,11 @@ public class DB {
     }
 
     /**
-     * Fecha um objeto ResultSet de forma segura.
-     * Verifica se o ResultSet não é nulo antes de tentar fechar.
+     * Safely closes a ResultSet object.
+     * Checks if the ResultSet is not null before attempting to close it.
      *
-     * @param rs o ResultSet a ser fechado, pode ser null
-     * @throws DbException se ocorrer erro ao fechar o ResultSet
+     * @param rs the ResultSet to be closed, can be null
+     * @throws DbException if an error occurs while closing the ResultSet
      */
     public static void closeResultSet(ResultSet rs) {
         if (rs != null) {
