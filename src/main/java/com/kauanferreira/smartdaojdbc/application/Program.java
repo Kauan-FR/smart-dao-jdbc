@@ -31,5 +31,14 @@ public class Program {
             System.out.println(obj);
         }
 
+        System.out.println();
+
+        System.out.println("| ==== | Third test: seller findAll | ==== |");
+        listaSeller = sellerDao.findAll();
+
+        for (Seller obj : listaSeller) {
+            System.out.println(obj);
+        }
+
     }
 }
