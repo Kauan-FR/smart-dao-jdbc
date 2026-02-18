@@ -136,7 +136,7 @@ public class Seller implements Serializable {
      *
      * @return the birth date
      */
-    public Date getBirthDate() {
+    public Date getBirthDate(Date birthdate) {
         return birthDate;
     }
 
@@ -154,7 +154,7 @@ public class Seller implements Serializable {
      *
      * @return the base salary
      */
-    public Double getBaseSalary() {
+    public Double getBaseSalary(Double basesalary) {
         return baseSalary;
     }
 
@@ -221,7 +221,7 @@ public class Seller implements Serializable {
     @Override
     public String toString() {
         return String.format(
-                "Seller = | Id = %d | Name = %s | Email = %s | BirthDate = %s | BaseSalary = %.2f | Department = %s |",
+                "Seller = | Id = %d | Name = %s | Email = %s | BirthDate = %s | BaseSalary = %.2f | Department: %s ",
                 id, name, email, birthDate, baseSalary, department
         );
     }
