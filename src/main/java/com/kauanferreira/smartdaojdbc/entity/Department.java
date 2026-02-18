@@ -40,8 +40,8 @@ public class Department implements Serializable {
      * @param name the department name
      */
     public Department(Integer id, String name) {
-        setId(id);
-        setName(name);
+        this.id = id;
+        this.name = name;
     }
 
     /**
