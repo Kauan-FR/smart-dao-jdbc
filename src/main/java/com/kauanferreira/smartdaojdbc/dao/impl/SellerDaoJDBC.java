@@ -6,14 +6,8 @@ import com.kauanferreira.smartdaojdbc.entity.Department;
 import com.kauanferreira.smartdaojdbc.entity.Seller;
 import com.kauanferreira.smartdaojdbc.exception.DbException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 
 /**
  * JDBC implementation of the {@link SellerDao} interface.
@@ -32,10 +26,47 @@ public class SellerDaoJDBC implements SellerDao {
         this.connection = connection;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * <p>After insertion, the generated id is retrieved
+     * and set back into the given {@link Seller} object.</p>
+     */
     @Override
     public void insert(Seller obj) {
+        PreparedStatement preparedStatement = null;
 
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "INSERT INTO seller " +
+                            "(name, email, birthdate, basesalary, departmentid) " +
+                            "VALUES " +
+                            "(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS
+            );
+            preparedStatement.setString(1, obj.getName());
+            preparedStatement.setString(2, obj.getEmail());
+            preparedStatement.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+            preparedStatement.setDouble(4, obj.getBaseSalary());
+            preparedStatement.setInt(5, obj.getDepartment().getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
+                if (resultSet.next()) {
+                    int id = resultSet.getInt(1);
+                    obj.setId(id);
+                }
+                DB.closeResultSet(resultSet);
+            } else {
+                throw new DbException("No lines were changed");
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     /** {@inheritDoc} */

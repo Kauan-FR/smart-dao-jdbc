@@ -136,7 +136,7 @@ public class Seller implements Serializable {
      *
      * @return the birth date
      */
-    public Date getBirthDate(Date birthdate) {
+    public Date getBirthDate() {
         return birthDate;
     }
 
@@ -154,7 +154,7 @@ public class Seller implements Serializable {
      *
      * @return the base salary
      */
-    public Double getBaseSalary(Double basesalary) {
+    public Double getBaseSalary() {
         return baseSalary;
     }
 
