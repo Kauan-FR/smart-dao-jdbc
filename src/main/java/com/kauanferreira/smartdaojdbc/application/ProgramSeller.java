@@ -5,7 +5,6 @@ import com.kauanferreira.smartdaojdbc.dao.SellerDao;
 import com.kauanferreira.smartdaojdbc.entity.Department;
 import com.kauanferreira.smartdaojdbc.entity.Seller;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +12,7 @@ import java.util.Scanner;
  * Test program for SellerDao operations.
  */
 
-public class Program {
+public class ProgramSeller {
     static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 

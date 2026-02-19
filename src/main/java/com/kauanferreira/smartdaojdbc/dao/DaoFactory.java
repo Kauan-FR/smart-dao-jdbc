@@ -1,6 +1,7 @@
 package com.kauanferreira.smartdaojdbc.dao;
 
 import com.kauanferreira.smartdaojdbc.DB;
+import com.kauanferreira.smartdaojdbc.dao.impl.DepartmentDaoJDBC;
 import com.kauanferreira.smartdaojdbc.dao.impl.SellerDaoJDBC;
 /**
  * Factory class responsible for creating DAO instances.
@@ -21,5 +22,15 @@ public class DaoFactory {
      */
     public static SellerDao createSellerDao() {
         return new SellerDaoJDBC(DB.getConnection());
+    }
+
+    /**
+     * Creates a new instance of {@link DepartmentDao}.
+     * The connection is obtained from the {@link DB} utility class.
+     *
+     * @return a JDBC-based implementation of DepartmentDao
+     */
+    public static DepartmentDao createDepartmentDao() {
+        return new DepartmentDaoJDBC(DB.getConnection());
     }
 }
