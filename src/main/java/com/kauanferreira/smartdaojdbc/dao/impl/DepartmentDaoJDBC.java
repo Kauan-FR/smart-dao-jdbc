@@ -69,10 +69,28 @@ public class DepartmentDaoJDBC implements DepartmentDao {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Updates the department name based on the given object's id.</p>
+     */
     @Override
     public void update(Department obj) {
+        PreparedStatement preparedStatement = null;
 
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "UPDATE department SET name = ? WHERE id = ?"
+            );
+            preparedStatement.setString(1, obj.getName());
+            preparedStatement.setInt(2, obj.getId());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new  DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     /** {@inheritDoc} */
