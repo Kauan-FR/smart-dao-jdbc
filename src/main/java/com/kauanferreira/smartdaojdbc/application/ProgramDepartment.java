@@ -27,6 +27,13 @@ public class ProgramDepartment {
         }
 
         System.out.println();
+
+        System.out.println("| ==== | Fourth test: department insert | ==== |");
+        Department newDepartment = new Department(null,"House");
+        departmentDao.insert(newDepartment);
+        System.out.printf("Insert new id = %d %n", newDepartment.getId());
+
+        System.out.println();
         sc.close();
     }
 }
