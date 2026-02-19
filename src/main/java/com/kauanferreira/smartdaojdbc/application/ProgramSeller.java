@@ -26,18 +26,18 @@ public class ProgramSeller {
 
         System.out.println("| ==== | Second test: seller findByDepartment | ==== |");
         Department department = new Department(2, null);
-        List<Seller> listaSeller = sellerDao.findByDepartment(department);
+        List<Seller> sellers = sellerDao.findByDepartment(department);
 
-        for (Seller obj : listaSeller) {
+        for (Seller obj : sellers) {
             System.out.println(obj);
         }
 
         System.out.println();
 
         System.out.println("| ==== | Third test: seller findAll | ==== |");
-        listaSeller = sellerDao.findAll();
+        sellers = sellerDao.findAll();
 
-        for (Seller obj : listaSeller) {
+        for (Seller obj : sellers) {
             System.out.println(obj);
         }
 

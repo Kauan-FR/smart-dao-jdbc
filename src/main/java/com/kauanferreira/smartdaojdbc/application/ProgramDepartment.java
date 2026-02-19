@@ -4,6 +4,7 @@ import com.kauanferreira.smartdaojdbc.dao.DaoFactory;
 import com.kauanferreira.smartdaojdbc.dao.DepartmentDao;
 import com.kauanferreira.smartdaojdbc.entity.Department;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ProgramDepartment {
@@ -15,6 +16,15 @@ public class ProgramDepartment {
         System.out.println("| ==== | First test: department findById | ==== |");
         Department department = departmentDao.findById(1);
         System.out.println(department);
+
+        System.out.println();
+
+        System.out.println("| ==== | Third test: department findAll | ==== |");
+        List<Department> departments = departmentDao.findAll();
+
+        for (Department dep : departments) {
+            System.out.println(dep);
+        }
 
         System.out.println();
         sc.close();

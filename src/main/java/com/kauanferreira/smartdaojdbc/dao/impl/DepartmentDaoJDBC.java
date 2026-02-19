@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,10 +85,34 @@ public class DepartmentDaoJDBC implements DepartmentDao {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Retrieves all departments ordered by database default.</p>
+     */
     @Override
     public List<Department> findAll() {
-        return List.of();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM department"
+            );
+            resultSet = preparedStatement.executeQuery();
+
+            List<Department> departments = new ArrayList<>();
+
+            while (resultSet.next()) {
+                departments.add(instantiateDepartment(resultSet));
+            }
+            return departments;
+        } catch (SQLException ex) {
+            throw new  DbException(ex.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
     }
 
     /**
