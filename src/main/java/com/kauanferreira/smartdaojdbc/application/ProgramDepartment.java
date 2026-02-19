@@ -28,18 +28,18 @@ public class ProgramDepartment {
 
         System.out.println();
 
-//        System.out.println("| ==== | Fourth test: department insert | ==== |");
-//        Department newDepartment = new Department(null,"House");
-//        departmentDao.insert(newDepartment);
-//        System.out.printf("Insert new id = %d %n", newDepartment.getId());
+        System.out.println("| ==== | Fourth test: department insert | ==== |");
+        Department newDepartment = new Department(null,"House");
+        departmentDao.insert(newDepartment);
+        System.out.printf("Insert new id = %d %n", newDepartment.getId());
 
         System.out.println();
 
         System.out.println("| ==== | Fifth test: department update | ==== |");
         System.out.println("Want to perform an UPDATE (yes/no)?");
-        String resposta = sc.nextLine();
+        String response = sc.nextLine();
 
-        if (resposta.equalsIgnoreCase("yes")) {
+        if (response.equalsIgnoreCase("yes")) {
             for (Department dep : departments) {
                 System.out.println(dep);
             }
@@ -57,6 +57,21 @@ public class ProgramDepartment {
         }
 
         System.out.println();
+
+        System.out.println("| ==== | Sixth test: department delete | ==== |");
+        System.out.println("Want to perform an DELETE (yes/no)?");
+        String resp = sc.nextLine();
+
+        if (resp.equalsIgnoreCase("yes")) {
+            for (Department dep : departments) {
+                System.out.println(dep);
+            }
+            System.out.println("What is the id of the department you want to delete ?");
+            int id = sc.nextInt();
+            sc.nextLine();
+            departmentDao.deleteById(id);
+            System.out.println("Delete Completed!!!");
+        }
         sc.close();
     }
 }
