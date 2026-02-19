@@ -69,10 +69,41 @@ public class SellerDaoJDBC implements SellerDao {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Updates an existing seller in the database.
+     * Sets all fields (name, email, birthdate, basesalary, departmentid)
+     * based on the seller's ID.
+     *
+     * @param obj the {@link Seller} object containing the updated data.
+     *            The ID must match an existing record in the database.
+     * @throws DbException if a database access error occurs during the update
+     * @see Seller
+     * @see DB#closeStatement(Statement)
+     */
     @Override
     public void update(Seller obj) {
+        PreparedStatement preparedStatement = null;
 
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "UPDATE seller " +
+                            "SET name = ?, email = ?, birthdate = ?, basesalary = ?, departmentid = ? " +
+                            "WHERE Id = ?"
+            );
+            preparedStatement.setString(1, obj.getName());
+            preparedStatement.setString(2, obj.getEmail());
+            preparedStatement.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+            preparedStatement.setDouble(4, obj.getBaseSalary());
+            preparedStatement.setInt(5, obj.getDepartment().getId());
+            preparedStatement.setInt(6, obj.getId());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     /** {@inheritDoc} */
