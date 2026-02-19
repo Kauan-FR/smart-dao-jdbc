@@ -106,10 +106,30 @@ public class SellerDaoJDBC implements SellerDao {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Deletes a seller from the database by their ID.
+     * If no seller is found with the given ID, no action is taken.
+     *
+     * @param id the ID of the seller to be deleted
+     * @throws DbException if a database access error occurs,
+     *         such as a referential integrity violation
+     * @see DB#closeStatement(Statement)
+     */
     @Override
     public void deleteById(Integer id) {
+        PreparedStatement preparedStatement = null;
 
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "DELETE FROM seller WHERE id = ?"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw  new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     /**

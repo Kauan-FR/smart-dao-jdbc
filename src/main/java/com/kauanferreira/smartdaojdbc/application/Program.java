@@ -7,6 +7,7 @@ import com.kauanferreira.smartdaojdbc.entity.Seller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Test program for SellerDao operations.
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class Program {
     static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
@@ -50,10 +52,19 @@ public class Program {
         System.out.println();
 
         System.out.println("| ==== | Fifth test: seller update | ==== |");
-        seller = sellerDao.findById(7);
+        seller = sellerDao.findById(5);
         seller.setName("Adson Vargs");
         sellerDao.update(seller);
         System.out.println("Update completed");
 
+        System.out.println();
+
+        System.out.println("| ==== | Sixth test: seller delete | ==== |");
+        System.out.println("Add the ID of the customer you want to delete");
+        int id = sc.nextInt();
+        sellerDao.deleteById(id);
+        System.out.println("Delete completed");
+
+        sc.close();
     }
 }
