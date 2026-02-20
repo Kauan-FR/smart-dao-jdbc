@@ -5,6 +5,7 @@ import com.kauanferreira.smartdaojdbc.dao.SellerDao;
 import com.kauanferreira.smartdaojdbc.entity.Department;
 import com.kauanferreira.smartdaojdbc.entity.Seller;
 import com.kauanferreira.smartdaojdbc.exception.DbException;
+import com.kauanferreira.smartdaojdbc.exception.EntityNotFoundException;
 
 import java.sql.*;
 import java.util.*;
@@ -64,6 +65,9 @@ public class SellerDaoJDBC implements SellerDao {
                 throw new DbException("No lines were changed");
             }
         } catch (SQLException e) {
+            if (e.getSQLState() != null && e.getSQLState().equals("23505")) {
+                throw new DuplicateFormatFlagsException("Email already exists: " + obj.getEmail());
+            }
             throw new DbException(e.getMessage());
         } finally {
             DB.closeStatement(preparedStatement);
@@ -158,7 +162,7 @@ public class SellerDaoJDBC implements SellerDao {
                 Department department = instantiateDepartment(resultSet);
                 return instantiateSeller(resultSet, department);
             }
-            return null;
+            throw new EntityNotFoundException("Seller not found with id: " + id);
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
@@ -331,7 +335,7 @@ public class SellerDaoJDBC implements SellerDao {
                 Department dept = instantiateDepartment(resultSet);
                 return instantiateSeller(resultSet, dept);
             }
-            return null;
+            throw new EntityNotFoundException("Seller not found with email: " + email);
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {

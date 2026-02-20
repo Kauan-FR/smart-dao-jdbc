@@ -4,6 +4,7 @@ import com.kauanferreira.smartdaojdbc.DB;
 import com.kauanferreira.smartdaojdbc.dao.DepartmentDao;
 import com.kauanferreira.smartdaojdbc.entity.Department;
 import com.kauanferreira.smartdaojdbc.exception.DbException;
+import com.kauanferreira.smartdaojdbc.exception.EntityNotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -137,7 +138,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
             if (resultSet.next()) {
                 return instantiateDepartment(resultSet);
             }
-            return null;
+            throw new EntityNotFoundException("Department not found with id: " + id);
         } catch (SQLException ex) {
             throw new DbException(ex.getMessage());
         } finally {
