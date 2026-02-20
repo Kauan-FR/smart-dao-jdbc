@@ -26,7 +26,7 @@ public class DaoFactory {
 
     /**
      * Creates a new instance of {@link DepartmentDao}.
-     * The connection is obtained from the {@link DB} utility class.
+     * The connection is obtained from the HikariCP connection pool.
      *
      * @return a JDBC-based implementation of DepartmentDao
      */

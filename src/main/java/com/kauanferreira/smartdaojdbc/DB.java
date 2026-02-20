@@ -1,84 +1,89 @@
 package com.kauanferreira.smartdaojdbc;
 
 import com.kauanferreira.smartdaojdbc.exception.DbException;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
 /**
  * Utility class for managing PostgreSQL database connections.
- * Uses the Singleton pattern to maintain a single active connection.
- * Settings are loaded from the db.properties file.
+ * Uses HikariCP connection pool for high-performance
+ * database access in production environments.
+ *
+ * <p>Settings are loaded from the db.properties file,
+ * including pool configuration parameters.</p>
  *
  * @author Kauan
- * @version 1.0
+ * @version 2.0
  * @since 2026
  */
 public class DB {
 
-    /** Single connection (Singleton) to the database. */
-    private static Connection connection = null;
+    /** HikariCP data source for managing the connection pool. */
+    private static HikariDataSource dataSource;
 
-    /**
-     * Gets the database connection.
-     * If the connection does not exist yet, creates a new one using
-     * the properties from db.properties. If it already exists, returns the same connection.
-     *
-     * @return Connection active database connection object
-     * @throws DbException if an error occurs while establishing the connection
-     */
-    public static Connection getConnection() {
-        if (connection == null) {
-            try {
-                Properties props = loadProperties();
-                String url = props.getProperty("dburl");
-                connection = DriverManager.getConnection(url, props);
-            } catch (Exception e) {
-                throw new DbException(e.getMessage());
-            }
+    static {
+        try {
+            Properties props = loadProperties();
+
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(props.getProperty("dburl"));
+            config.setUsername(props.getProperty("user"));
+            config.setPassword(props.getProperty("password"));
+            config.setMaximumPoolSize(Integer.parseInt(props.getProperty("maximumPoolSize", "10")));
+            config.setMinimumIdle(Integer.parseInt(props.getProperty("minimumIdle", "5")));
+            config.setConnectionTimeout(Long.parseLong(props.getProperty("connectionTimeout", "30000")));
+            config.setIdleTimeout(Long.parseLong(props.getProperty("idleTimeout", "600000")));
+
+            dataSource = new HikariDataSource(config);
+        } catch (Exception e) {
+            throw new DbException("Failed to initialize connection pool: " + e.getMessage());
         }
-        return connection;
     }
 
     /**
-     * Loads connection properties from the db.properties file.
-     * The file must be located in src/main/resources/ and contain:
-     * <ul>
-     *     <li>user - database user</li>
-     *     <li>password - database password</li>
-     *     <li>dburl - JDBC connection URL (e.g.: jdbc:postgresql://localhost:5432/livraria)</li>
-     * </ul>
+     * Gets a connection from the HikariCP connection pool.
      *
-     * @return Properties object containing the connection settings
-     * @throws DbException if the db.properties file is not found or cannot be read
+     * @return Connection a database connection from the pool
+     * @throws DbException if an error occurs while obtaining the connection
      */
-    private static Properties loadProperties() {
-        try (InputStream fs = DB.class.getClassLoader().getResourceAsStream("db.properties")) {
-            Properties props = new Properties();
-            props.load(fs);
-            return props;
-        } catch (Exception e) {
+    public static Connection getConnection() {
+        try {
+            return dataSource.getConnection();
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
     }
 
     /**
-     * Closes the active database connection.
-     * After closing, the connection is set to null to allow
-     * a new connection in the future if needed.
-     *
-     * @throws DbException if an error occurs while closing the connection
+     * Shuts down the HikariCP connection pool.
+     * Should be called when the application is closing
+     * to release all database resources.
      */
-    public static void closeConnection() {
+    public static void closePool() {
+        if (dataSource != null && !dataSource.isClosed()) {
+            dataSource.close();
+        }
+    }
+
+    /**
+     * Safely closes a Connection object.
+     * Returns the connection back to the pool instead of closing it permanently.
+     *
+     * @param connection the Connection to be returned to the pool, can be null
+     * @throws DbException if an error occurs while closing the Connection
+     */
+    public static void closeConnection(Connection connection) {
         if (connection != null) {
             try {
                 connection.close();
-                connection = null;
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new DbException(e.getMessage());
             }
         }
@@ -95,7 +100,7 @@ public class DB {
         if (stmt != null) {
             try {
                 stmt.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new DbException(e.getMessage());
             }
         }
@@ -112,9 +117,25 @@ public class DB {
         if (rs != null) {
             try {
                 rs.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new DbException(e.getMessage());
             }
+        }
+    }
+
+    /**
+     * Loads connection properties from the db.properties file.
+     *
+     * @return Properties object containing the connection and pool settings
+     * @throws DbException if the db.properties file is not found or cannot be read
+     */
+    private static Properties loadProperties() {
+        try (InputStream fs = DB.class.getClassLoader().getResourceAsStream("db.properties")) {
+            Properties props = new Properties();
+            props.load(fs);
+            return props;
+        } catch (Exception e) {
+            throw new DbException(e.getMessage());
         }
     }
 }
