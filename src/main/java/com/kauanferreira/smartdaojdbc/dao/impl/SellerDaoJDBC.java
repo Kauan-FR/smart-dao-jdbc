@@ -158,7 +158,7 @@ public class SellerDaoJDBC implements SellerDao {
                 Department department = instantiateDepartment(resultSet);
                 return instantiateSeller(resultSet, department);
             }
-            return  null;
+            return null;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
@@ -279,7 +279,7 @@ public class SellerDaoJDBC implements SellerDao {
                             + "WHERE seller.Name ILIKE ? "
                             + "ORDER BY Name"
             );
-            preparedStatement.setString(1, name);
+            preparedStatement.setString(1, "%" + name + "%");
             resultSet = preparedStatement.executeQuery();
 
             List<Seller> sellers = new ArrayList<>();
@@ -340,9 +340,50 @@ public class SellerDaoJDBC implements SellerDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Uses PostgreSQL's EXTRACT function to filter
+     * sellers by their birth month.</p>
+     */
     @Override
     public List<Seller> findByBirthMonth(int month) {
-        return List.of();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT seller.*, department.Name as DepName "
+                            + "FROM seller INNER JOIN department "
+                            + "ON seller.DepartmentId = department.Id "
+                            + "WHERE EXTRACT(MONTH FROM seller.BirthDate) = ? "
+                            + "ORDER BY Name"
+            );
+
+            preparedStatement.setInt(1, month);
+            resultSet = preparedStatement.executeQuery();
+
+            List<Seller> sellers = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+
+            while (resultSet.next()) {
+
+                Department dept = map.get(resultSet.getInt("departmentid"));
+
+                if (dept == null) {
+                    dept = instantiateDepartment(resultSet);
+                    map.put(resultSet.getInt("departmentid"), dept);
+                }
+
+                sellers.add(instantiateSeller(resultSet, dept));
+            }
+            return sellers;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
     }
 
     /**

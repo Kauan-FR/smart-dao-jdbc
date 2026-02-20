@@ -100,7 +100,7 @@ public class ProgramSeller {
 
         System.out.println("| ==== | Fifth test: seller update | ==== |");
         System.out.println();
-        System.out.println("Do you want to make an update on any seller?");
+        System.out.println("Do you want to make an update on any seller (yes/no)?");
         response = sc.nextLine();
 
         if (response.equalsIgnoreCase("yes")) {
@@ -114,7 +114,7 @@ public class ProgramSeller {
 
         System.out.println("| ==== | Sixth test: seller delete | ==== |");
         System.out.println();
-        System.out.println("Do you want to delete any seller?");
+        System.out.println("Do you want to delete any seller (yes/no)?");
         response = sc.nextLine();
 
         if (response.equalsIgnoreCase("yes")) {
@@ -142,7 +142,7 @@ public class ProgramSeller {
 
         System.out.println();
 
-        System.out.println("| ==== | Eighth test test: seller findByEmail | ==== |");
+        System.out.println("| ==== | Eighth test: seller findByEmail | ==== |");
         System.out.println();
         System.out.println("Do you want to contact the seller by email (yes/no)?");
         response = sc.nextLine();
@@ -157,6 +157,21 @@ public class ProgramSeller {
         }
 
         System.out.println();
+
+        System.out.println("| ==== | Nono test: seller findByBirthMonth | ==== |");
+        System.out.println();
+        System.out.println("Do you want to search for the seller by date of birth (yes/no)?");
+        response = sc.nextLine();
+
+        if (response.equalsIgnoreCase("yes")) {
+            System.out.println("Enter the month (1-12):");
+            int month = sc.nextInt();
+            sellers = sellerDao.findByBirthMonth(month);
+
+            for (Seller obj : sellers) {
+                System.out.println(obj);
+            }
+        }
         sc.close();
     }
 }
