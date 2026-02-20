@@ -75,7 +75,7 @@ public interface SellerDao {
      * @param email the email to search for
      * @return the seller found, or {@code null} if not found
      */
-    List<Seller> findByEmail(String email);
+    Seller findByEmail(String email);
 
     /**
      * Finds all sellers born in a specific month.

@@ -139,6 +139,24 @@ public class ProgramSeller {
             System.out.println(seller);
             System.out.println("Seller found!!!");
         }
+
+        System.out.println();
+
+        System.out.println("| ==== | Eighth test test: seller findByEmail | ==== |");
+        System.out.println();
+        System.out.println("Do you want to contact the seller by email (yes/no)?");
+        response = sc.nextLine();
+        
+        if (response.equalsIgnoreCase("yes")) {
+            System.out.println("What is the seller's email?");
+            String email = sc.nextLine();
+            seller.setEmail(email);
+            sellerDao.findByEmail(email);
+            System.out.println(seller);
+            System.out.println("Seller found!!!");
+        }
+
+        System.out.println();
         sc.close();
     }
 }

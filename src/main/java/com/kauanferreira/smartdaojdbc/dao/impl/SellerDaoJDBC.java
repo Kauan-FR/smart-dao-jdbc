@@ -305,9 +305,39 @@ public class SellerDaoJDBC implements SellerDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Searches by exact email match with INNER JOIN
+     * on the department table.</p>
+     */
     @Override
-    public List<Seller> findByEmail(String email) {
-        return List.of();
+    public Seller findByEmail(String email) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT seller.*, department.Name as DepName "
+                            + "FROM seller INNER JOIN department "
+                            + "ON seller.DepartmentId = department.Id "
+                            + "WHERE seller.Email = ?"
+            );
+
+            preparedStatement.setString(1, email);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Department dept = instantiateDepartment(resultSet);
+                return instantiateSeller(resultSet, dept);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
     }
 
     @Override
