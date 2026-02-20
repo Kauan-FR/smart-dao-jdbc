@@ -8,6 +8,7 @@ import com.kauanferreira.smartdaojdbc.exception.DbException;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 /**
  * JDBC implementation of the {@link SellerDao} interface.
@@ -257,6 +258,61 @@ public class SellerDaoJDBC implements SellerDao {
             DB.closeStatement(preparedStatement);
             DB.closeResultSet(resultSet);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Uses SQL ILIKE for case-insensitive partial matching
+     * with INNER JOIN on the department table.</p>
+     */
+    @Override
+    public List<Seller> findByName(String name) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT seller.*, department.Name as DepName "
+                            + "FROM seller INNER JOIN department "
+                            + "ON seller.DepartmentId = department.Id "
+                            + "WHERE seller.Name ILIKE ? "
+                            + "ORDER BY Name"
+            );
+            preparedStatement.setString(1, name);
+            resultSet = preparedStatement.executeQuery();
+
+            List<Seller> sellers = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+
+            while (resultSet.next()) {
+
+                Department dept = map.get(resultSet.getInt("departmentid"));
+
+                if (dept == null) {
+                    dept = instantiateDepartment(resultSet);
+                    map.put(resultSet.getInt("departmentid"), dept);
+                }
+
+                sellers.add(instantiateSeller(resultSet, dept));
+            }
+            return sellers;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
+    }
+
+    @Override
+    public List<Seller> findByEmail(String email) {
+        return List.of();
+    }
+
+    @Override
+    public List<Seller> findByBirthMonth(int month) {
+        return List.of();
     }
 
     /**

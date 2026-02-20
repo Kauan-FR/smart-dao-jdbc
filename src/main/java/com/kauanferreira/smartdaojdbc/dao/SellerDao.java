@@ -3,6 +3,7 @@ package com.kauanferreira.smartdaojdbc.dao;
 import com.kauanferreira.smartdaojdbc.entity.Department;
 import com.kauanferreira.smartdaojdbc.entity.Seller;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,4 +60,30 @@ public interface SellerDao {
      * @return a list of sellers in the given department, ordered by name
      */
     List<Seller> findByDepartment(Department department);
+
+    /**
+     * Finds all sellers whose name contains the given string (case-insensitive).
+     *
+     * @param name the name or partial name to search for
+     * @return a list of sellers matching the criteria, ordered by name
+     */
+    List<Seller> findByName(String name);
+
+    /**
+     * Finds a seller by their exact email address.
+     *
+     * @param email the email to search for
+     * @return the seller found, or {@code null} if not found
+     */
+    List<Seller> findByEmail(String email);
+
+    /**
+     * Finds all sellers born in a specific month.
+     * Useful for business scenarios such as identifying employees
+     * with birthdays in a given month for company celebrations.
+     *
+     * @param month the birth month (1-12)
+     * @return a list of sellers born in the given month, ordered by name
+     */
+    List<Seller> findByBirthMonth(int month);
 }
