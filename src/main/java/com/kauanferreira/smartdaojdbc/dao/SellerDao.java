@@ -86,4 +86,13 @@ public interface SellerDao {
      * @return a list of sellers born in the given month, ordered by name
      */
     List<Seller> findByBirthMonth(int month);
+
+    /**
+     * Returns a paginated list of all sellers.
+     *
+     * @param page the page number (starting from 1)
+     * @param size the number of records per page
+     * @return a list of sellers for the given page, ordered by name
+     */
+    List<Seller> findAll(int page, int size);
 }

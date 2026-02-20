@@ -387,6 +387,53 @@ public class SellerDaoJDBC implements SellerDao {
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * <p>Uses SQL LIMIT and OFFSET for pagination.
+     * Results are ordered by name, using a {@link Map}
+     * to avoid creating duplicate {@link Department} instances.</p>
+     */
+    @Override
+    public List<Seller> findAll(int page, int size) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT seller.*, department.Name as DepName "
+                            + "FROM seller INNER JOIN department "
+                            + "ON seller.DepartmentId = department.Id "
+                            + "ORDER BY Name "
+                            + "LIMIT ? OFFSET ?"
+            );
+            preparedStatement.setInt(1, size);
+            preparedStatement.setInt(2, (page - 1) * size);
+            resultSet = preparedStatement.executeQuery();
+
+            List<Seller> sellers = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+
+            while (resultSet.next()) {
+
+                Department dept = map.get(resultSet.getInt("departmentid"));
+
+                if (dept == null) {
+                    dept = instantiateDepartment(resultSet);
+                    map.put(resultSet.getInt("departmentid"), dept);
+                }
+
+                sellers.add(instantiateSeller(resultSet, dept));
+            }
+            return sellers;
+        } catch (SQLException e) {
+            throw new  DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
+    }
+
+    /**
      * Creates a {@link Department} instance from the current ResultSet row.
      *
      * @param resultSet the result set positioned at a valid row

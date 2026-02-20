@@ -172,6 +172,19 @@ public class ProgramSeller {
                 System.out.println(obj);
             }
         }
+
+        System.out.println();
+
+        System.out.println("| ==== | Tenth test: seller findAll paginated | ==== |");
+        List<Seller> page1 = sellerDao.findAll(1, 3);
+        for (Seller obj : page1) {
+            System.out.println(obj);
+        }
+        System.out.println();
+        List<Seller> page2 = sellerDao.findAll(2, 3);
+        for (Seller obj : page2) {
+            System.out.println(obj);
+        }
         sc.close();
     }
 }

@@ -50,4 +50,13 @@ public interface DepartmentDao {
      * @return a list of all departments
      */
     List<Department> findAll();
+
+    /**
+     * Returns a paginated list of all departments.
+     *
+     * @param page the page number (starting from 1)
+     * @param size the number of records per page
+     * @return a list of departments for the given page, ordered by name
+     */
+    List<Department> findAll(int page, int size);
 }

@@ -176,6 +176,11 @@ public class DepartmentDaoJDBC implements DepartmentDao {
         }
     }
 
+    @Override
+    public List<Department> findAll(int page, int size) {
+        return List.of();
+    }
+
     /**
      * Creates a {@link Department} instance from the current ResultSet row.
      *
