@@ -142,4 +142,30 @@ public class SellerDaoJDBCTest {
         assertNotNull(sellers);
         assertTrue(sellers.size() <= 2);
     }
+
+    @Test
+    @Order(11)
+    @DisplayName("Should update seller date")
+    public void updateShouldModifySellerData() {
+        Seller seller = sellerDao.findById(insertId);
+        seller.setName("Update User");
+        seller.setEmail("update@gmail.com");
+
+        sellerDao.update(seller);
+
+        Seller update = sellerDao.findById(insertId);
+        assertEquals("Update User", update.getName());
+        assertEquals("update@gmail.com", update.getEmail());
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("Should delete seller by id")
+    public void deleteByIdShouldRemoveSeller() {
+        sellerDao.deleteById(insertId);
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            sellerDao.findById(insertId);
+        });
+    }
 }
