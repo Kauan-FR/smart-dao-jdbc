@@ -5,6 +5,7 @@ import com.kauanferreira.smartdaojdbc.dao.DaoFactory;
 import com.kauanferreira.smartdaojdbc.dao.SellerDao;
 import com.kauanferreira.smartdaojdbc.entity.Department;
 import com.kauanferreira.smartdaojdbc.entity.Seller;
+import com.kauanferreira.smartdaojdbc.exception.EntityNotFoundException;
 import org.junit.jupiter.api.*;
 
 import java.util.Date;
@@ -40,7 +41,7 @@ public class SellerDaoJDBCTest {
     @DisplayName("Should insert a new seller and return generated id")
     public void insertShouldSetGeneratedId() {
         Seller seller = new Seller(
-                null, "Test User", "testeuser@gmail.com", 2500.0,
+                null, "Test User", "testuser@gmail.com", 2500.0,
                 new Date(), new Department(1, null)
         );
 
@@ -59,6 +60,25 @@ public class SellerDaoJDBCTest {
 
         assertNotNull(seller);
         assertEquals("Test User", seller.getName());
-        assertEquals("testeuser@gmail.com", seller.getEmail());
+        assertEquals("testuser@gmail.com", seller.getEmail());
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("Should throw EntityNotFoundException for invalid id")
+    public void findByIdShouldThrowWhenNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            sellerDao.findById(999999999);
+        });
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Should find seller by email")
+    public void findByEmailShouldReturnSeller() {
+        Seller seller = sellerDao.findByEmail("testuser@gmail.com");
+
+        assertNotNull(seller);
+        assertEquals("Test User", seller.getName());
     }
 }
