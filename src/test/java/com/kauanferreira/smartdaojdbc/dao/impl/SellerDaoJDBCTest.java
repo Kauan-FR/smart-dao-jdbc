@@ -101,4 +101,26 @@ public class SellerDaoJDBCTest {
         assertFalse(sellers.isEmpty());
         assertTrue(sellers.stream().anyMatch(s -> s.getName().contains("Test")));
     }
+
+    @Test
+    @Order(7)
+    @DisplayName("Should find sellers by department")
+    public void findByDepartmentShouldReturnSellers() {
+        Department department = new Department(1, null);
+        List<Seller> sellers = sellerDao.findByDepartment(department);
+
+        assertFalse(sellers.isEmpty());
+        sellers.forEach(seller -> assertEquals(1, seller.getDepartment().getId()));
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("Should find sellers by birth month")
+    public void findByBirthMonthShouldReturnSellers() {
+        // Gets the month of the inserted seller (current date)
+        int currentMonth = new Date().getMonth() + 1;
+        List<Seller> sellers = sellerDao.findByBirthMonth(currentMonth);
+
+        assertFalse(sellers.isEmpty());
+    }
 }
