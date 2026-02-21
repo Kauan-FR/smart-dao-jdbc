@@ -123,4 +123,23 @@ public class SellerDaoJDBCTest {
 
         assertFalse(sellers.isEmpty());
     }
+
+    @Test
+    @Order(9)
+    @DisplayName("Should return all sellers")
+    public void findAllShouldReturnNonEmptyList() {
+        List<Seller> sellers = sellerDao.findAll();
+
+        assertFalse(sellers.isEmpty());
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("Should return paginated sellers")
+    public void findAllPaginatedShouldRespectPageSize() {
+        List<Seller> sellers = sellerDao.findAll(1, 2);
+
+        assertNotNull(sellers);
+        assertTrue(sellers.size() <= 2);
+    }
 }
