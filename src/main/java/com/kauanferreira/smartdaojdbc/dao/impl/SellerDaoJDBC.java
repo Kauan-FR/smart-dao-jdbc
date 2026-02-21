@@ -9,7 +9,6 @@ import com.kauanferreira.smartdaojdbc.exception.EntityNotFoundException;
 
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
 
 /**
  * JDBC implementation of the {@link SellerDao} interface.
