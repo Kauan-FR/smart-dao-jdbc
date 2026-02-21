@@ -1,0 +1,34 @@
+# ============================================
+# Spring Boot Application Settings
+# ============================================
+
+spring.application.name=smartdaojdbc
+server.port=8080
+
+# ============================================
+# DataSource Configuration (used by Flyway)
+# ============================================
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/smartdaodb
+spring.datasource.username=${DB_USER:postgres}
+spring.datasource.password=${DB_PASSWORD:your_password}
+
+# ============================================
+# Flyway Database Migration
+# ============================================
+
+# Enable automatic database migration on startup
+spring.flyway.enabled=true
+
+# Location of SQL migration scripts
+spring.flyway.locations=classpath:db/migration
+
+# ============================================
+# Swagger / OpenAPI Documentation
+# ============================================
+
+# API docs endpoint
+springdoc.api-docs.path=/api-docs
+
+# Swagger UI endpoint (access at http://localhost:8080/swagger-ui.html)
+springdoc.swagger-ui.path=/swagger-ui.html

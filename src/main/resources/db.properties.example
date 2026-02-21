@@ -1,0 +1,29 @@
+# ============================================
+# HikariCP Connection Pool Configuration
+# ============================================
+
+# Database credentials
+user=${DB_USER:postgres}
+password=${DB_PASSWORD:your_password}
+
+# JDBC connection URL for PostgreSQL
+dburl=jdbc:postgresql://localhost:5432/smartdaodb
+
+# Disable SSL for local development
+useSSL=false
+
+# ============================================
+# Pool Settings
+# ============================================
+
+# Maximum number of connections in the pool
+maximumPoolSize=10
+
+# Minimum number of idle connections maintained in the pool
+minimumIdle=5
+
+# Maximum time (ms) to wait for a connection from the pool
+connectionTimeout=30000
+
+# Maximum time (ms) a connection can sit idle before being removed
+idleTimeout=600000
