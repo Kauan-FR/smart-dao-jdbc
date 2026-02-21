@@ -8,6 +8,8 @@ import com.kauanferreira.smartdaojdbc.exception.EntityNotFoundException;
 import org.junit.jupiter.api.*;
 
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -62,5 +64,46 @@ public class DepartmentDaoJDBCTest {
     @DisplayName("Should throw EntityNotFoundException for invalid id")
     public void findByIdShouldThrowWhenNotFound() {
         assertThrows(EntityNotFoundException.class, () -> departmentDao.findById(9999999));
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("Should return all departments")
+    public void findAllShouldReturnNonEmptyList() {
+        List<Department> departments = departmentDao.findAll();
+
+        assertFalse(departments.isEmpty());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("Should return pagination departments")
+    public void findAllPaginatedShouldRespectPageSize() {
+        List<Department> departments = departmentDao.findAll(1, 2);
+
+        assertNotNull(departments);
+        assertTrue(departments.size() <= 2);
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Should update department data")
+    public void updateShouldModifyDepartmentData() {
+        Department department = departmentDao.findById(insertedId);
+        department.setName("Updated Department");
+
+        departmentDao.update(department);
+
+        Department updated = departmentDao.findById(insertedId);
+        assertEquals("Updated Department", updated.getName());
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("Should delete department by id")
+    public void deleteByIdShouldRemoveDepartment() {
+        departmentDao.deleteById(insertedId);
+
+        assertThrows(EntityNotFoundException.class, () -> departmentDao.findById(insertedId));
     }
 }
