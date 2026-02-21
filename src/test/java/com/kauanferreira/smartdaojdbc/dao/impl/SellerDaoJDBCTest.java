@@ -9,6 +9,7 @@ import com.kauanferreira.smartdaojdbc.exception.EntityNotFoundException;
 import org.junit.jupiter.api.*;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 /**
@@ -80,5 +81,24 @@ public class SellerDaoJDBCTest {
 
         assertNotNull(seller);
         assertEquals("Test User", seller.getName());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("Should throw EntityNotFoundException for invalid email")
+    public void findByEmailShouldThrowWhenNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            sellerDao.findByEmail("nonexistent@gmail.com");
+        });
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Should find sellers by name containing keyword")
+    public void findByNameShouldReturnMatchingSellers() {
+        List<Seller> sellers = sellerDao.findByName("Test");
+
+        assertFalse(sellers.isEmpty());
+        assertTrue(sellers.stream().anyMatch(s -> s.getName().contains("Test")));
     }
 }
