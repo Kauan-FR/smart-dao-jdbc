@@ -35,3 +35,6 @@ build/
 ### Sensitive configuration files ###
 src/main/resources/db.properties
 src/main/resources/application.properties
+
+## env ##
+.env

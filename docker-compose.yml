@@ -1,0 +1,50 @@
+# ============================================
+# Docker Compose - Smart DAO JDBC
+# ============================================
+# Orchestrates the PostgreSQL database and the Spring Boot application.
+# Credentials are loaded from the .env file (not committed to Git).
+# Usage: docker compose up
+
+services:
+
+  # ==========================================
+  # PostgreSQL Database
+  # ==========================================
+    db:
+        image: postgres:17
+        container_name: smart-dao-db
+        environment:
+          POSTGRES_DB: ${DB_NAME}
+          POSTGRES_USER: ${DB_USER}
+          POSTGRES_PASSWORD: ${DB_PASSWORD}
+        ports:
+        - "5432:5432"
+        volumes:
+          - pgdata:/var/lib/postgresql/data  # Persist data between restarts
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+
+  # ==========================================
+  # Spring Boot Application
+  # ==========================================
+  # Waits for the database to be healthy before starting.
+
+    app:
+      build: .
+      container_name: smart-dao-app
+      ports:
+        - "8080:8080"
+      environment:
+        DB_HOST: db
+        DB_PORT: 5432
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASSWORD: ${DB_PASSWORD}
+      depends_on:
+        db:
+          condition: service_healthy
+volumes:
+  pgdata:

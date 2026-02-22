@@ -29,8 +29,14 @@ public class DB {
     private static HikariDataSource dataSource;
 
     /**
-     * Returns the HikariCP DataSource instance.
-     * Used by Spring Boot for Flyway migrations.
+     * Initializes the HikariCP connection pool on class loading.
+     *
+     * Environment variables (Docker) take priority over db.properties (local).
+     * If DB_HOST is set, the JDBC URL is built from environment variables.
+     * Otherwise, the URL is read from db.properties for local development.
+     *
+     * Pool settings (maxPoolSize, minIdle, timeouts) are always loaded
+     * from db.properties regardless of the environment.
      *
      * @return the HikariDataSource managing the connection pool
      */
@@ -42,10 +48,24 @@ public class DB {
         try {
             Properties props = loadProperties();
 
+            // Read connection parameters with environment variable priority
+            String host = System.getenv().getOrDefault("DB_HOST", "localhost");
+            String port = System.getenv().getOrDefault("DB_PORT", "5432");
+            String dbName = System.getenv().getOrDefault("DB_NAME", "smartdaodb");
+            String user = System.getenv().getOrDefault("DB_USER", props.getProperty("user"));
+            String password = System.getenv().getOrDefault("DB_PASSWORD", props.getProperty("password"));
+
+            // Build JDBC URL from environment variables (Docker) or db.properties (local)
+
+            String jdbcUrl = System.getenv("DB_HOST") != null
+                                ? "jdbc:postgresql://" + host + ":" + port + "/" + dbName
+                                : props.getProperty("dburl");
+
+            // Configure HikariCP connection pool
             HikariConfig config = new HikariConfig();
-            config.setJdbcUrl(props.getProperty("dburl"));
-            config.setUsername(props.getProperty("user"));
-            config.setPassword(props.getProperty("password"));
+            config.setJdbcUrl(jdbcUrl);
+            config.setUsername(user);
+            config.setPassword(password);
             config.setMaximumPoolSize(Integer.parseInt(props.getProperty("maximumPoolSize", "10")));
             config.setMinimumIdle(Integer.parseInt(props.getProperty("minimumIdle", "5")));
             config.setConnectionTimeout(Long.parseLong(props.getProperty("connectionTimeout", "30000")));
