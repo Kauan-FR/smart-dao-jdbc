@@ -28,6 +28,16 @@ public class DB {
     /** HikariCP data source for managing the connection pool. */
     private static HikariDataSource dataSource;
 
+    /**
+     * Returns the HikariCP DataSource instance.
+     * Used by Spring Boot for Flyway migrations.
+     *
+     * @return the HikariDataSource managing the connection pool
+     */
+    public static HikariDataSource getDataSource() {
+        return dataSource;
+    }
+
     static {
         try {
             Properties props = loadProperties();
