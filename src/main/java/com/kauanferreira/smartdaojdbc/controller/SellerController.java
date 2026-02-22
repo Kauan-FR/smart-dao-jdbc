@@ -96,7 +96,7 @@ public class SellerController {
      * @param month the birth month (1-12)
      * @return list of sellers born in the given month
      */
-    @GetMapping("/birthmonth/{month}")
+    @GetMapping("/birth-month/{month}")
     public ResponseEntity<List<Seller>> findByBirthMonth(@PathVariable Integer month) {
         return ResponseEntity.ok(sellerDao.findByBirthMonth(month));
     }

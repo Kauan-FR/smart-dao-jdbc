@@ -179,7 +179,29 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public List<Department> findAll(int page, int size) {
-        return List.of();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM department ORDER BY name LIMIT ? OFFSET ?"
+            );
+            preparedStatement.setInt(1, size);
+            preparedStatement.setInt(2, (page - 1) * size);
+            resultSet = preparedStatement.executeQuery();
+
+            List<Department> departments = new ArrayList<>();
+
+            while (resultSet.next()) {
+                departments.add(instantiateDepartment(resultSet));
+            }
+            return departments;
+        } catch (SQLException ex) {
+            throw new DbException(ex.getMessage());
+        } finally {
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
     }
 
     /**

@@ -1,0 +1,464 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: smartdaojdbc
+meta:
+  id: wrk_f6146ed84c6b4ed092765cef8972a3c3
+  created: 1771653257538
+  modified: 1771726457829
+  description: ""
+collection:
+  - name: DepartmentController
+    meta:
+      id: fld_c5dd9fecd2f1475b987578ba5aba1880
+      created: 1771726495407
+      modified: 1771726519588
+      sortKey: -1771726495407
+      description: ""
+    children:
+      - url: http://localhost:8080/api/departments
+        name: "Department findAll "
+        meta:
+          id: req_15cfac0aeb724077b90632d1e6e73248
+          created: 1771726502916
+          modified: 1771727125867
+          isPrivate: false
+          description: ""
+          sortKey: -1771726502916
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/departments/4
+        name: Department findById
+        meta:
+          id: req_16b044fd5d774c589dbf27d665145514
+          created: 1771726756958
+          modified: 1771727355085
+          isPrivate: false
+          description: ""
+          sortKey: -1771726756958
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/departments
+        name: Department pagination
+        meta:
+          id: req_25390886017748b19b833d48c2706c4f
+          created: 1771727006460
+          modified: 1771728069743
+          isPrivate: false
+          description: ""
+          sortKey: -1771727006460
+        method: GET
+        parameters:
+          - name: page
+            value: "1"
+            description: ""
+            disabled: false
+          - name: size
+            value: "2"
+            description: ""
+            disabled: false
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/departments
+        name: Department insert
+        meta:
+          id: req_9190d432ba054ebb805be676e1177bbe
+          created: 1771727206475
+          modified: 1771728943638
+          isPrivate: false
+          description: ""
+          sortKey: -1771726502816
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Marketing"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/departments/5
+        name: Department update
+        meta:
+          id: req_be00137c71cc49af9c042157a1d6fd6a
+          created: 1771727520200
+          modified: 1771728945011
+          isPrivate: false
+          description: ""
+          sortKey: -1771726502716
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Marketing Update"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/departments/5
+        name: Department delete
+        meta:
+          id: req_1cec11cccd364928b6e3b63069d69cd5
+          created: 1771727629630
+          modified: 1771728946342
+          isPrivate: false
+          description: ""
+          sortKey: -1771726502616
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: SellerController
+    meta:
+      id: fld_2d19d02d01d74120a8df679762d2aaf7
+      created: 1771728141712
+      modified: 1771728492053
+      sortKey: -1771728141712
+      description: ""
+    children:
+      - url: http://localhost:8080/api/sellers
+        name: Seller findAll
+        meta:
+          id: req_b6492c6cb96b45ceb0dc0578df0fa2b0
+          created: 1771728144863
+          modified: 1771728181090
+          isPrivate: false
+          description: ""
+          sortKey: -1771728147231
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/sellers/5
+        name: Seller findById
+        meta:
+          id: req_d44eaeefe0404edda01e60ff3e066f57
+          created: 1771728189153
+          modified: 1771728219641
+          isPrivate: false
+          description: ""
+          sortKey: -1771728189153
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/sellers/email/bob@gmail.com
+        name: Seller findByEmail
+        meta:
+          id: req_97d53488faad4e8abeea328f69d3529c
+          created: 1771728314845
+          modified: 1771728324654
+          isPrivate: false
+          description: ""
+          sortKey: -1771728314845
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/sellers/name/bob
+        name: Seller findByName
+        meta:
+          id: req_1f07b2e70f504b9382517315a889ef99
+          created: 1771728335635
+          modified: 1771728357508
+          isPrivate: false
+          description: ""
+          sortKey: -1771728335635
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/sellers/department/1
+        name: Seller findByDepartment
+        meta:
+          id: req_aef992d0bb6a41c3a065aa4b896b1171
+          created: 1771728364470
+          modified: 1771728387971
+          isPrivate: false
+          description: ""
+          sortKey: -1771728364470
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/sellers/birth-month/11
+        name: Seller findByBirthMonth
+        meta:
+          id: req_b81383a7c577440a8ff042a042dd20ed
+          created: 1771728394963
+          modified: 1771728630020
+          isPrivate: false
+          description: ""
+          sortKey: -1771728394963
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/sellers
+        name: Seller insert
+        meta:
+          id: req_85dd79a09983409cbbec143fcbc72f2b
+          created: 1771728493752
+          modified: 1771728895842
+          isPrivate: false
+          description: ""
+          sortKey: -1771728147131
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+                "name": "Test Seller",
+                "email": "test@gmail.com",
+                "birthDate": "1995-06-15",
+                "baseSalary": 3500.00,
+                "department": {"id": 1}
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/sellers/7
+        name: Seller update
+        meta:
+          id: req_7317d41c99b44b0fbf022110aae9cb8c
+          created: 1771728807157
+          modified: 1771728898667
+          isPrivate: false
+          description: ""
+          sortKey: -1771728147031
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+                "name": "Test Updated",
+                "email": "test@gmail.com",
+                "birthDate": "1995-06-15",
+                "baseSalary": 4000.00,
+                "department": {"id": 2}
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/sellers/7
+        name: Seller delete
+        meta:
+          id: req_124259a4bb2445baaabc177c8e2a5ccd
+          created: 1771728838744
+          modified: 1771728900189
+          isPrivate: false
+          description: ""
+          sortKey: -1771728146931
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/sellers
+        name: Seller pagination
+        meta:
+          id: req_395ec9a7b6bd4375a6ec224d96415b9b
+          created: 1771728884273
+          modified: 1771728939491
+          isPrivate: false
+          description: ""
+          sortKey: -1771728395013
+        method: GET
+        parameters:
+          - name: page
+            value: "1"
+            description: ""
+            disabled: false
+          - name: size
+            value: "3"
+            description: ""
+            disabled: false
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_b007e1f4d4a7ad3e2efde03eabfb715c2d20dbe3
+    created: 1771653257541
+    modified: 1771653257541
+environments:
+  name: Base Environment
+  meta:
+    id: env_b007e1f4d4a7ad3e2efde03eabfb715c2d20dbe3
+    created: 1771653257540
+    modified: 1771653257540
+    isPrivate: false
